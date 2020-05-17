@@ -41,7 +41,7 @@ def scrap(url = "https://www.imdb.com/search/title/?release_date=2019-01-01,2019
     temp = pd.Series(temp, name = 'Movie Name')
     temp2 = pd.Series(temp2, name = 'Meta Score')
     temp3 = pd.Series(temp3, name = 'Ratings')
-    df = pd.concat([temp, temp0, temp2, temp3], axis = 1)  #creating the dataframe
+    df = pd.concat([temp, temp3, temp2, temp0], axis = 1)  #creating the dataframe
     
     df['Votes'] = df['Votes'].str.replace("\n","")
     df['Movie Name'] = df['Movie Name'].str.replace("Gisaengchung","Parasite")
@@ -76,10 +76,7 @@ def scrap(url = "https://www.imdb.com/search/title/?release_date=2019-01-01,2019
     df['Votes'] = df['Votes'].astype('int64')
     #I made it into category because there are missing values and I can't change it to int64
     df['Meta Score'] = df['Meta Score'].astype('category')
-    df = pd.crosstab(index = df['Movie Name'],
-           columns = 'Ratings',
-           values = df['Ratings'],
-           aggfunc = 'mean').sort_values('Ratings', ascending = False)
+    df = df.sort_values('Ratings', ascending = False).set_index('Movie Name')
    #end of data wranggling
 
     return df
@@ -90,7 +87,8 @@ def index():
 
     #This part for rendering matplotlib
     fig = plt.figure(figsize=(10,10),dpi=300)
-    df.head(7).plot.bar()
+    ratings1 = df.head(7).iloc[:, 0:1]
+    ratings1.plot.bar()
     
     #Do not change this part
     plt.savefig('plot',bbox_inches="tight") 
