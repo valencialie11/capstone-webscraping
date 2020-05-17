@@ -92,6 +92,7 @@ def index():
     #actually im not too sure what this fig is for since it is indicated as a problem in VScode, so it must be sth else?
     ratings1 = df.head(7).iloc[:, 0:1]
     ratings1.plot.bar(figsize=(10,15))
+    #I changed the figsize here because the fig above does not work
     
     #Do not change this part
     plt.savefig('plot',bbox_inches="tight") 
