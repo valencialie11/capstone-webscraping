@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import re 
 
 app = Flask(__name__)
+#name of flask for running (export set FLASK_APP=app.py)
 
 def scrap(url = "https://www.imdb.com/search/title/?release_date=2019-01-01,2019-12-31"):
     #This is fuction for scrapping
@@ -59,7 +60,7 @@ def scrap(url = "https://www.imdb.com/search/title/?release_date=2019-01-01,2019
             return Votes[:pos] 
   
         else: 
-        # if clean up needed return the same name 
+        # if clean up not needed return the same name 
             return Votes
     
     df['Votes'] = df['Votes'].apply(Clean_names) 
@@ -84,16 +85,20 @@ def scrap(url = "https://www.imdb.com/search/title/?release_date=2019-01-01,2019
 @app.route("/")
 def index():
     df = scrap("https://www.imdb.com/search/title/?release_date=2019-01-01,2019-12-31") #insert url here
+    #scrap is taken from the prev function made above
 
     #This part for rendering matplotlib
-    fig = plt.figure(figsize=(10,10),dpi=300)
+    fig = plt.figure(figsize=(10,20),dpi=300)
+    #actually im not too sure what this fig is for since it is indicated as a problem in VScode, so it must be sth else?
     ratings1 = df.head(7).iloc[:, 0:1]
-    ratings1.plot.bar()
+    ratings1.plot.bar(figsize=(10,15))
     
     #Do not change this part
     plt.savefig('plot',bbox_inches="tight") 
+    #save a png of the plot made
     figfile = BytesIO()
     plt.savefig(figfile, format='png')
+    #not too sure about the ones below
     figfile.seek(0)
     figdata_png = base64.b64encode(figfile.getvalue())
     result = str(figdata_png)[2:-1]
@@ -101,9 +106,11 @@ def index():
 
     #this is for rendering the table
     df = df.to_html(classes=["table table-bordered table-striped table-dark table-condensed"])
-
+    #class for bootstrap class?
     return render_template("index.html", table=df, result=result)
+    #index.html for the html document, table is df and result is based on the one above
 
 
 if __name__ == "__main__": 
     app.run()
+    #to run the flask app
