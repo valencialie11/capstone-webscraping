@@ -1,5 +1,12 @@
 # Webscraping Capstone
 
+## Dependencies
+- beautifulsoup4
+- requests
+- pandas
+- re
+- matplotlib
+
 Hi! This is a webscraping capstone project for my Data Analytics specialisation course. I used Beautifulsoup4 to help scrap data from the IMDB website.
 
 Challenges:
